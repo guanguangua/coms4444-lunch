@@ -154,7 +154,7 @@ public class Player implements lunch.sim.Player {
 					targetCornersChosen.put(id, targetCorner);
 				else
 					targetCornersChosen.put(id, targetCorners.get(id % targetCorners.size()));
-				System.out.println("Player " + id + " will go to corner " + targetCornersChosen.get(id) + ".");
+//				System.out.println("Player " + id + " will go to corner " + targetCornersChosen.get(id) + ".");
 			}
 			else
 				targetCorner = targetCornersChosen.get(id);
@@ -163,11 +163,11 @@ public class Player implements lunch.sim.Player {
 				turn++;
 				if(ps.get_held_item_type() != null) {
 					foodCurrentlySearchingFor = null;
-					System.out.println("Player " + id + " is keeping back " + ps.get_held_item_type().name() + ".");
+//					System.out.println("Player " + id + " is keeping back " + ps.get_held_item_type().name() + ".");
 					return new Command(CommandType.KEEP_BACK);
 				}
 				if(ps.is_player_searching()) {
-					System.out.println("Player " + id + " is aborting search.");
+//					System.out.println("Player " + id + " is aborting search.");
 					foodCurrentlySearchingFor = null;
 					return new Command(CommandType.ABORT);
 				}
@@ -175,7 +175,7 @@ public class Player implements lunch.sim.Player {
 				// The player reaches the corner if the distance is within (or exactly) 1 m
 				double distanceFromCorner = Math.sqrt(Math.pow(targetCorner.y - currPoint.y, 2) + Math.pow(targetCorner.x - currPoint.x, 2));
 				if(distanceFromCorner <= 1.0) {
-					System.out.println("Player " + id + " is making its final move to the corner.");
+//					System.out.println("Player " + id + " is making its final move to the corner.");
 					return Command.createMoveCommand(targetCorner);
 				}
 				
@@ -183,7 +183,7 @@ public class Player implements lunch.sim.Player {
 				double slope = ((double) (targetCorner.y - currPoint.y)) / ((double) (targetCorner.x - currPoint.x));
 				double deltaX = (targetCorner.x > currPoint.x ? 1.0 : -1.0) / Math.sqrt(Math.pow(slope, 2) + 1);
 				double deltaY = Math.abs(slope) * (targetCorner.y > currPoint.y ? 1.0 : -1.0) / Math.sqrt(Math.pow(slope, 2) + 1);
-				System.out.println("Player " + id + " is moving to the corner.");
+//				System.out.println("Player " + id + " is moving to the corner.");
 				return Command.createMoveCommand(new Point(currPoint.x + deltaX, currPoint.y + deltaY));
 			}
 		}
@@ -213,7 +213,7 @@ public class Player implements lunch.sim.Player {
 		boolean monkeysTooClose, gooseTooClose;
 		
 		// Determine if at least 3 monkeys are too close
-		System.out.println();
+//		System.out.println();
 		if(monkeys.size() < 3)
 			monkeysTooClose = false;
 		else {
@@ -222,7 +222,7 @@ public class Player implements lunch.sim.Player {
 			double distanceToThirdMonkey = Point.dist(ps.get_location(), monkeys.get(2).get_location());			
 			if(distanceToFirstMonkey <= MONKEY_DISTANCE_THRESHOLD && distanceToSecondMonkey <= MONKEY_DISTANCE_THRESHOLD && distanceToThirdMonkey <= MONKEY_DISTANCE_THRESHOLD) {
 				monkeysTooClose = true;
-				System.out.println("Monkey distances: [" + distanceToFirstMonkey + ", " + distanceToSecondMonkey + ", " + distanceToThirdMonkey + "]");
+//				System.out.println("Monkey distances: [" + distanceToFirstMonkey + ", " + distanceToSecondMonkey + ", " + distanceToThirdMonkey + "]");
 			}
 			else
 				monkeysTooClose = false;
@@ -232,19 +232,19 @@ public class Player implements lunch.sim.Player {
 		if(geese.size() == 0 || Point.dist(ps.get_location(), geese.get(0).get_location()) > GOOSE_DISTANCE_THRESHOLD)
 			gooseTooClose = false;
 		else {
-			System.out.println("Goose distance: " + Point.dist(ps.get_location(), geese.get(0).get_location()));
+//			System.out.println("Goose distance: " + Point.dist(ps.get_location(), geese.get(0).get_location()));
 			gooseTooClose = true;
 		}
 		
 		// Print the state of the player
-		System.out.println("Player is still holding item: " + (ps.get_held_item_type() != null));
-		System.out.println("Player is still searching: " + (ps.is_player_searching()));
+//		System.out.println("Player is still holding item: " + (ps.get_held_item_type() != null));
+//		System.out.println("Player is still searching: " + (ps.is_player_searching()));
 		printAvailability(ps);
 
 		// Abort taking out the food item if the animal is too close
 		if(ps.is_player_searching() && ps.get_held_item_type() == null &&
 				(monkeysTooClose || (gooseTooClose && foodCurrentlySearchingFor == FoodType.SANDWICH))) {
-			System.out.println("Player " + id + " is aborting search.");
+//			System.out.println("Player " + id + " is aborting search.");
 			foodCurrentlySearchingFor = null;
 			return new Command(CommandType.ABORT);
 		}
@@ -253,7 +253,7 @@ public class Player implements lunch.sim.Player {
 		if(!ps.is_player_searching() && ps.get_held_item_type() != null && (((monkeysTooClose || gooseTooClose) && (ps.get_held_item_type() == FoodType.SANDWICH)) ||
 				(monkeysTooClose && (ps.get_held_item_type() != FoodType.SANDWICH)))) {
 			foodCurrentlySearchingFor = null;
-			System.out.println("Player " + id + " is keeping back " + ps.get_held_item_type().name() + ".");
+//			System.out.println("Player " + id + " is keeping back " + ps.get_held_item_type().name() + ".");
 			return new Command(CommandType.KEEP_BACK);
 		}
 		
@@ -285,7 +285,7 @@ public class Player implements lunch.sim.Player {
 				// Take out the food item if it is not a sandwich and increase consumption time
 				if(foodType != FoodType.SANDWICH1 && foodType != FoodType.SANDWICH2) {
 					if(totalTime - turn < 500 || usePrediction) {
-						System.out.println("Player " + id + " is taking out " + foodType.name() + ".");
+//						System.out.println("Player " + id + " is taking out " + foodType.name() + ".");
 						foodCurrentlySearchingFor = foodType;
 						return new Command(CommandType.TAKE_OUT, foodType);
 					}
@@ -296,7 +296,7 @@ public class Player implements lunch.sim.Player {
 					
 					// Take out the sandwich as a distraction
 					if(totalTime - turn > 200 && foodType == FoodType.SANDWICH2 && ps.get_time_for_item(foodType) == 1) {
-						System.out.println("Player " + id + " is taking out a sandwich.");
+//						System.out.println("Player " + id + " is taking out a sandwich.");
 						foodCurrentlySearchingFor = FoodType.SANDWICH;
 						return new Command(CommandType.TAKE_OUT, foodType);
 					}
@@ -308,7 +308,7 @@ public class Player implements lunch.sim.Player {
 					}
 				}
 
-				System.out.println("Player " + id + " is not going to take out a sandwich because the goose is too close.");
+//				System.out.println("Player " + id + " is not going to take out a sandwich because the goose is too close.");
 				return new Command();
 			}
 		}
@@ -323,13 +323,13 @@ public class Player implements lunch.sim.Player {
 			// Eat if no animal is too close
 			if((!monkeysTooClose && (ps.get_held_item_type() != FoodType.SANDWICH)) ||
 				(!monkeysTooClose && !gooseTooClose && (ps.get_held_item_type() == FoodType.SANDWICH))) {
-				System.out.println("Player " + id + " is going to eat " + ps.get_held_item_type().name() + ".");
+//				System.out.println("Player " + id + " is going to eat " + ps.get_held_item_type().name() + ".");
 				return new Command(CommandType.EAT);
 			}
 		}
 		
 		// The player is waiting, as it did not submit any other actions
-		System.out.println("Player " + id + " is going to wait.");
+//		System.out.println("Player " + id + " is going to wait.");
 		return new Command(CommandType.WAIT);
 	}
 	
@@ -340,12 +340,12 @@ public class Player implements lunch.sim.Player {
 	 * @param ps: this player's state
 	 */
 	private void printAvailability(PlayerState ps) {
-		System.out.println("Cookie is available: " + ps.check_availability_item(FoodType.COOKIE)); 
-		System.out.println("Fruit 1 is available: " + ps.check_availability_item(FoodType.FRUIT1)); 
-		System.out.println("Fruit 2 is available: " + ps.check_availability_item(FoodType.FRUIT2)); 
-		System.out.println("Egg is available: " + ps.check_availability_item(FoodType.EGG)); 
-		System.out.println("Sandwich 1 is available: " + ps.check_availability_item(FoodType.SANDWICH1)); 
-		System.out.println("Sandwich 2 is available: " + ps.check_availability_item(FoodType.SANDWICH2)); 
+//		System.out.println("Cookie is available: " + ps.check_availability_item(FoodType.COOKIE));
+//		System.out.println("Fruit 1 is available: " + ps.check_availability_item(FoodType.FRUIT1));
+//		System.out.println("Fruit 2 is available: " + ps.check_availability_item(FoodType.FRUIT2));
+//		System.out.println("Egg is available: " + ps.check_availability_item(FoodType.EGG));
+//		System.out.println("Sandwich 1 is available: " + ps.check_availability_item(FoodType.SANDWICH1));
+//		System.out.println("Sandwich 2 is available: " + ps.check_availability_item(FoodType.SANDWICH2));
 	}
 	
 	public class Trajectory {
